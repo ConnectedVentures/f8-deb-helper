@@ -10,3 +10,4 @@ if [[ -z $LATEST ]]; then
 fi
 
 scp $LATEST $APT_REPO:/dists/fresh8/production/binary-$ARCH
+ssh apt.fresh8.co 'apt-rescan'
