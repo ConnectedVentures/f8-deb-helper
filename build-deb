@@ -35,8 +35,8 @@ source package.sh
 dpkg-deb --build $DEB_DIR
 
 NEW_DEB=f8-${NAME}_${VERSION}_${ARCH}.deb
-if [[ ! -e $NEW_DEB ]]; then
-  echo Failed to build $NEW_DEB >&2
+if [[ ! -e $DEB_DIR.deb ]]; then
+  echo Failed to build $DEB_DIR >&2
   exit 1
 fi
 mv $DEB_DIR.deb $NEW_DEB
