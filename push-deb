@@ -2,7 +2,7 @@
 APT_REPO="${APT_REPO:-public.apt.fresh8.co}"
 ARCH=$(dpkg --print-architecture)
 
-USER="${USER:-codeship}"
+CI_USER="${CI_USER:-codeship}"
 
 LATEST=$(ls -t1 f8-$NAME*.deb 2>/dev/null | head -n 1)
 
@@ -11,5 +11,5 @@ if [[ -z $LATEST ]]; then
   exit 1
 fi
 
-scp $LATEST $USER@$APT_REPO:/dists/fresh8/production/binary-$ARCH
-ssh $USER@$APT_REPO 'apt-rescan'
+scp $LATEST $CI_USER@$APT_REPO:/dists/fresh8/production/binary-$ARCH
+ssh $CI_USER@$APT_REPO 'apt-rescan'
