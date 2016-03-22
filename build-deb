@@ -30,7 +30,7 @@ fi
 VERSION=$(deb_version)
 
 # Include packaging instructions
-source package.sh
+source ../package.sh
 
 dpkg-deb --build $DEB_DIR
 
