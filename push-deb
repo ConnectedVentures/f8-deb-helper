@@ -11,5 +11,5 @@ if [[ -z $LATEST ]]; then
   exit 1
 fi
 
-scp $LATEST $APT_REPO:/dists/fresh8/production/binary-$ARCH
+scp $LATEST $USER@$APT_REPO:/dists/fresh8/production/binary-$ARCH
 ssh $USER@$APT_REPO 'apt-rescan'
