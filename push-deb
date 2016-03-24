@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+ENV="${ENV:-testing}"
 APT_REPO="${APT_REPO:-public.apt.fresh8.co}"
 ARCH=$(dpkg --print-architecture)
 
@@ -14,4 +15,4 @@ fi
 REPO_PATH=/dists/fresh8/production/binary-$ARCH/$LATEST
 scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH
 
-ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; apt-rescan'
+ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; ENV='$ENV' apt-rescan' 
