@@ -1,6 +1,0 @@
-Package: f8-example
-Architecture: amd64
-Maintainer: You <you@connected-ventures.com>
-Priority: optional
-Version: 0.0.1
-Description: Demonstrate how to use deb deployment with Golang/gb projects
