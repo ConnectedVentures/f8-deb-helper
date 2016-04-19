@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+HELPER_VERSION="${VERSION:-1.0.0}"
+wget -qO- "https://github.com/lbn/f8-deb-helper/archive/${HELPER_VERSION}.tar.gz" | tar xvz
+mv f8-deb-helper-$HELPER_VERSION f8-deb-helper
+
+./f8-deb-helper/build-deb
+./f8-deb-helper/push-deb
+
