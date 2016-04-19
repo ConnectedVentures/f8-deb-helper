@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 HELPER_VERSION="${VERSION:-1.0.0}"
 wget -qO- "https://github.com/lbn/f8-deb-helper/archive/${HELPER_VERSION}.tar.gz" | tar xvz
+rm -rf f8-deb-helper
 mv f8-deb-helper-$HELPER_VERSION f8-deb-helper
 
-./f8-deb-helper/build-deb
-./f8-deb-helper/push-deb
-
+for file in deb_*; do
+  export NAME="${file/deb_/}"
+  ./f8-deb-helper/build-deb
+  ./f8-deb-helper/push-deb
+done
