@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
-ENV="${ENV:-testing}"
+ENV=testing
+if [[ $CI_BRANCH =~ ^[0-9].[0-9].[0-9]$ ]]; then
+  ENV=production
+elif [[ $CI_BRANCH =~ ^release/[0-9].[0-9].[0-9]$ ]]; then
+  ENV=staging
+else
+  ENV=testing
+fi
+
 APT_REPO="${APT_REPO:-public.apt.fresh8.co}"
 ARCH=$(dpkg --print-architecture)
 

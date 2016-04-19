@@ -18,16 +18,20 @@ if [[ ! -d $DEB_DIR ]]; then
   exit 1
 fi
 
-deb_version() {
-  grep Version $DEB_DIR/DEBIAN/control | awk '{ print $2 }'
-}
-
 if [[ ! -d $DEB_DIR/DEBIAN ]]; then
   echo Please create DEBIAN directory in $DEB_DIR with control file >&2
   exit 1
 fi
 
-VERSION=$(deb_version)
+VERSION=unknown
+if [[ $CI_BRANCH =~ ^[0-9].[0-9].[0-9]$ ]]; then
+  VERSION=$CI_BRANCH
+elif [[ $CI_BRANCH =~ ^release/[0-9].[0-9].[0-9]$ ]]; then
+  VERSION=$(sed "s/^release\/\([0-9].[0-9].[0-9]\)$/\1/" <<< $CI_BRANCH)
+else
+  VERSION=0.0.0-$(cut -c1-7 <<< $CI_BRANCH)
+fi
+sed -i "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
 # Include packaging instructions
 source package.sh
