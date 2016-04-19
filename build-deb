@@ -29,7 +29,7 @@ if [[ $CI_BRANCH =~ ^[0-9].[0-9].[0-9]$ ]]; then
 elif [[ $CI_BRANCH =~ ^release/[0-9].[0-9].[0-9]$ ]]; then
   VERSION=$(sed "s/^release\/\([0-9].[0-9].[0-9]\)$/\1/" <<< $CI_BRANCH)
 else
-  VERSION=0.0.0-$(cut -c1-7 <<< $CI_BRANCH)
+  VERSION=0.0.0-$(cut -c1-7 <<< $CI_COMMIT_ID)
 fi
 sed -i "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
