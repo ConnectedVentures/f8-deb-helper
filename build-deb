@@ -24,13 +24,14 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
 fi
 
 VERSION=unknown
-if [[ $CI_BRANCH =~ ^[0-9].[0-9].[0-9]$ ]]; then
+if [[ $CI_BRANCH =~ ^[0-9]+.[0-9]+.[0-9]+$ ]]; then
   VERSION=$CI_BRANCH
-elif [[ $CI_BRANCH =~ ^release/[0-9].[0-9].[0-9]$ ]]; then
-  VERSION=$(sed "s/^release\/\([0-9].[0-9].[0-9]\)$/\1/" <<< $CI_BRANCH)
+elif [[ $CI_BRANCH =~ ^release/[0-9]+.[0-9]+.[0-9]+$ ]]; then
+  VERSION=$(sed "s/^release\/\([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*\)$/\1/" <<< $CI_BRANCH)
 else
-  VERSION=0.0.0-$(cut -c1-7 <<< $CI_COMMIT_ID)
+  VERSION=$(sed "s/\//-/g" <<< $CI_BRANCH)
 fi
+
 sed -i "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
 # Include packaging instructions
@@ -45,4 +46,3 @@ if [[ ! -e $DEB_DIR.deb ]]; then
 fi
 mv $DEB_DIR.deb $NEW_DEB
 echo Produced $NEW_DEB
-
