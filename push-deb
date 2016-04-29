@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 ENV=testing
-if [[ $CI_BRANCH =~ ^[0-9].[0-9].[0-9]$ ]]; then
+if [[ $CI_BRANCH =~ ^v[0-9].[0-9].[0-9]$ ]]; then
   ENV=production
-elif [[ $CI_BRANCH =~ ^release/[0-9].[0-9].[0-9]$ ]]; then
+elif [[ $CI_BRANCH =~ ^release/[0-9].[0-9]$ ]]; then
   ENV=staging
 else
   ENV=testing
@@ -23,4 +23,4 @@ fi
 REPO_PATH=/dists/fresh8/$ENV/binary-$ARCH/$LATEST
 scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH
 
-ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; ENV='$ENV' apt-rescan' 
+ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; ENV='$ENV' apt-rescan'
