@@ -25,7 +25,7 @@ fi
 
 VERSION=unknown
 VERSION=$(sed "s/\//-/g" <<< $CI_BRANCH)
-VERSION="${VERSION}#${CI_COMMIT_ID}"
+VERSION="${VERSION}-${CI_COMMIT_ID}"
 
 sed -i "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
