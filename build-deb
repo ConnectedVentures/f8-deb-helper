@@ -24,8 +24,16 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
 fi
 
 VERSION=unknown
-VERSION=$(sed "s/\//-/g" <<< $CI_BRANCH)
-VERSION="${VERSION}-${CI_COMMIT_ID}"
+
+if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
+  VERSION=${VERSION:1}
+elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+){1}$ ]]; then
+  VERSION="${BASH_REMATCH[1]}RC-${CI_COMMIT_ID}"
+else
+  VERSION="0.0.0-${CI_COMMIT_ID}_${CI_BRANCH}"
+fi
+
+VERSION=$(sed "s/\//-/g" <<< $VERSION)
 
 sed -i "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
