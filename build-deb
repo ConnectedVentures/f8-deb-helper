@@ -35,7 +35,7 @@ fi
 
 VERSION=$(sed "s/\//-/g" <<< $VERSION)
 
-sed -i "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
+sed -i.bak "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
 # Include packaging instructions
 source package.sh
@@ -49,3 +49,5 @@ if [[ ! -e $DEB_DIR.deb ]]; then
 fi
 mv $DEB_DIR.deb $NEW_DEB
 echo Produced $NEW_DEB
+
+sed -i.bak "s/$VERSION/CI_VERSION/g" $DEB_DIR/DEBIAN/control
