@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 ENV=testing
-if [[ $CI_BRANCH =~ ^v\d+.\d+.\d+$ ]]; then
+if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
   ENV=production
-elif [[ $CI_BRANCH =~ ^release/\d+.\d+$ ]]; then
+elif [[ $CI_BRANCH =~ ^release/[0-9]+.[0-9]+$ ]]; then
   ENV=staging
 else
   ENV=testing
