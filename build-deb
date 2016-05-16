@@ -26,7 +26,7 @@ fi
 VERSION=unknown
 
 if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
-  VERSION=${VERSION:1}
+  VERSION=${CI_BRANCH:1}
 elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+){1}$ ]]; then
   VERSION="${BASH_REMATCH[1]}RC-${CI_COMMIT_ID}"
 else
