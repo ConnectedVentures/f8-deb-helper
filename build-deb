@@ -24,13 +24,14 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
 fi
 
 VERSION=unknown
+COMMIT_ID=${CI_COMMIT_ID:0:7}
 
 if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
   VERSION=${CI_BRANCH:1}
 elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+){1}$ ]]; then
-  VERSION="${BASH_REMATCH[1]}RC-${CI_COMMIT_ID}"
+  VERSION="${BASH_REMATCH[1]}RC-${COMMIT_ID}"
 else
-  VERSION="0.0.0-${CI_COMMIT_ID}-${CI_BRANCH}"
+  VERSION="0.0.0-${COMMIT_ID}-${CI_BRANCH}"
 fi
 
 VERSION=$(sed "s/\//-/g" <<< $VERSION)
