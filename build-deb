@@ -24,7 +24,7 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
 fi
 
 VERSION=unknown
-COMMIT_ID=${CI_COMMIT_ID:0:7}
+COMMIT_ID=${CI_COMMIT:0:7}
 
 if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
   VERSION=${CI_BRANCH:1}
