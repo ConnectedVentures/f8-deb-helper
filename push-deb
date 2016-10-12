@@ -21,6 +21,8 @@ if [[ -z $LATEST ]]; then
 fi
 
 REPO_PATH=/dists/fresh8/$ENV/binary-$ARCH/$LATEST
+echo "scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH"
 scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH
 
+echo "ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; ENV='$ENV' apt-rescan'"
 ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; ENV='$ENV' apt-rescan'
