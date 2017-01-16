@@ -20,7 +20,7 @@ if [[ -z $LATEST ]]; then
   exit 1
 fi
 
-REPO_PATH=/dists/fresh8/$ENV/binary-$ARCH/$LATEST
+REPO_PATH=/home/apt/.aptly/upload/$LATEST
 scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH
 
-ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; ENV='$ENV' apt-rescan'
+ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; env='$ENV' deb_filename='$LATEST' aptly-update'
