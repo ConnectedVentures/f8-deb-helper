@@ -8,7 +8,7 @@ else
   ENV=testing
 fi
 
-APT_REPO="${APT_REPO:-apt.fresh8.co}"
+APT_REPO="${APT_REPO:-apt.fresh8.tech}"
 ARCH=$(dpkg --print-architecture)
 
 CI_USER="${CI_USER:-codeship}"
