@@ -8,7 +8,7 @@ else
   ENV=testing
 fi
 
-APT_REPO="${APT_REPO:internal.apt.fresh8.tech}"
+APT_REPO="${APT_REPO:-internal.apt.fresh8.tech}"
 ARCH=$(dpkg --print-architecture)
 
 LATEST=$(ls -t1 f8-$NAME*.deb 2>/dev/null | head -n 1)
@@ -19,6 +19,6 @@ if [[ -z $LATEST ]]; then
 fi
 
 curl -X POST -F file=@$LATEST http://$APT_REPO/api/files/$LATEST
-curl -X POST http://$APT_REPO/api/files/$LATEST
-curl -X POST http://$APT_REPO/api/repos/$ENV/file/$LATEST
+curl -X POST http://$APT_REPO:8080/api/repos/$ENV/file/$LATEST
+curl -X PUT -H 'Content-Type: application/json' --data '{}' http://$APT_REPO/api/publish/$ENV/trusty
 curl -X POST -F "pkg=$(basename $LATEST .deb)" -F "env=$ENV" http://$APT_REPO/notify
