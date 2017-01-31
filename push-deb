@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ENV=testing
 CI_BRANCH=$DRONE_COMMIT_BRANCH
-if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
+if [[ $CI_BRANCH =~ ^refs/tags/v[0-9]+.[0-9]+.[0-9]+$ ]]; then
   ENV=production
 elif [[ $CI_BRANCH =~ ^release/[0-9]+.[0-9]+$ ]]; then
   ENV=staging
