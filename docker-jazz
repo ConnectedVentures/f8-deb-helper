@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+runner() {
+  HELPER_VERSION="${VERSION:-2.1.0}"
+  for file in deb_*; do
+    export NAME="${file/deb_/}"
+    ./build-deb
+    ./push-deb
+  done
+}
+
+runner
