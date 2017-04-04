@@ -34,7 +34,7 @@ else
   VERSION="0.0.0-${COMMIT_ID}-${CI_BRANCH}"
 fi
 
-VERSION=$(sed "s/\//-/g" <<< $VERSION)
+VERSION=$(sed "s/[_\/]/-/g" <<< $VERSION)
 
 sed -i.bak "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
