@@ -3,6 +3,7 @@
 set -e
 
 runner() {
+  pip install --user semver
   curl https://raw.githubusercontent.com/ConnectedVentures/f8-deb-helper/master/latest-helper > latest-helper
   chmod +x latest-helper
   latest_version=$(./latest-helper $VERSION)
