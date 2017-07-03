@@ -7,6 +7,7 @@ runner() {
   curl https://raw.githubusercontent.com/ConnectedVentures/f8-deb-helper/release/4.0/latest-helper > latest-helper
   chmod +x latest-helper
   latest_version=$(curl -s https://api.github.com/repos/ConnectedVentures/f8-deb-helper/releases | ./latest-helper $VERSION)
+  echo "Using deb-helper ${latest_version}"
 
   wget -qO- "https://github.com/ConnectedVentures/f8-deb-helper/archive/${latest_version}.tar.gz" | tar xvz
 
