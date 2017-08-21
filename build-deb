@@ -24,10 +24,12 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
 fi
 
 VERSION=unknown
-COMMIT_ID=${CI_COMMIT_ID:0:7}
+COMMIT_ID=${DRONE_COMMIT_SHA:0:7}
+CI_BRANCH=${DRONE_COMMIT_BRANCH}
+CI_BUILD_NUMBER=$((${DRONE_BUILD_NUMBER}+3000))
 
-if [[ $CI_BRANCH =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then
-  VERSION=${CI_BRANCH:1}
+if [[ $CI_BRANCH =~ ^refs/tags/v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
+  VERSION=${BASH_REMATCH[1]}
 elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+){1}$ ]]; then
   VERSION="${BASH_REMATCH[1]}.0-b.${CI_BUILD_NUMBER}"
 else
