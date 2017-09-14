@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 ENV=testing
-CI_BRANCH=$DRONE_COMMIT_BRANCH
+if [[ "$CIRCLECI" == "true" ]]; then
+  source ./env_circle
+else
+  source ./env_drone
+fi
+
 if [[ $CI_BRANCH =~ ^refs/tags/v[0-9]+.[0-9]+.[0-9]+$ ]]; then
   ENV=production
 elif [[ $CI_BRANCH =~ ^release/[0-9]+.[0-9]+$ ]]; then
@@ -19,7 +24,14 @@ if [[ -z $LATEST ]]; then
   exit 1
 fi
 
-curl -X POST -F file=@$LATEST http://$APT_REPO/api/files/$(basename $LATEST .deb)
-curl -X POST http://$APT_REPO/api/repos/$ENV/file/$(basename $LATEST .deb)
-curl -X PUT -H 'Content-Type: application/json' --data '{}' http://$APT_REPO/api/publish/$ENV/trusty
-curl -X POST -F "pkg=$(basename $LATEST .deb)" -F "env=$ENV" http://$APT_REPO/notify
+if [[ "$DRONE" == "true" ]]; then
+  curl -X POST -F file=@$LATEST http://$APT_REPO/api/files/$(basename $LATEST .deb)
+  curl -X POST http://$APT_REPO/api/repos/$ENV/file/$(basename $LATEST .deb)
+  curl -X PUT -H 'Content-Type: application/json' --data '{}' http://$APT_REPO/api/publish/$ENV/trusty
+  curl -X POST -F "pkg=$(basename $LATEST .deb)" -F "env=$ENV" http://$APT_REPO/notify
+else
+  REPO_PATH=/home/apt/.aptly/upload/$LATEST
+  scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH
+
+  ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; env='$ENV' deb_filename='$LATEST' aptly-update'
+fi

@@ -24,9 +24,12 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
 fi
 
 VERSION=unknown
-COMMIT_ID=${DRONE_COMMIT_SHA:0:7}
-CI_BRANCH=${DRONE_COMMIT_BRANCH}
-CI_BUILD_NUMBER=$((${DRONE_BUILD_NUMBER}+4000))
+
+if [[ "$CIRCLECI" == "true" ]]; then
+  source ./env_circle
+else
+  source ./env_drone
+fi
 
 if [[ $CI_BRANCH =~ ^refs/tags/v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
   VERSION=${BASH_REMATCH[1]}
