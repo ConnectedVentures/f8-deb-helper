@@ -9,7 +9,7 @@ else
   ENV=testing
 fi
 
-APT_REPO="${APT_REPO:-internal.apt.fresh8.tech}"
+APT_REPO="${APT_REPO:-apt.fresh8.tech}"
 ARCH=$(dpkg --print-architecture)
 
 LATEST=$(ls -t1 f8-$NAME*.deb 2>/dev/null | head -n 1)
