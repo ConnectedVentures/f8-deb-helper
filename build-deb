@@ -25,10 +25,11 @@ fi
 
 VERSION=unknown
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [[ "$CIRCLECI" == "true" ]]; then
-  source ./env_circle
+  source DIR/env_circle
 else
-  source ./env_drone
+  source DIR/env_drone
 fi
 
 if [[ $CI_BRANCH =~ ^refs/tags/v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
