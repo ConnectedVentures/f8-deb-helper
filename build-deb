@@ -25,7 +25,6 @@ fi
 
 VERSION=unknown
 COMMIT_ID=${DRONE_COMMIT_SHA:0:7}
-CI_BRANCH=${DRONE_COMMIT_BRANCH}
 CI_BUILD_NUMBER=$((${DRONE_BUILD_NUMBER}+4000))
 
 if [[ $CI_BRANCH =~ ^refs/tags/v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
