@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+import json
+import sys
+import semver
+
+
+def parse_version(tag):
+    return semver.parse_version_info(tag.replace("v", ""))
+
+
+versions = [parse_version(release["tag_name"])
+            for release in json.load(sys.stdin)]
+if len(sys.argv) != 2:
+    print("first arg needs to be major.minor", file=sys.stderr)
+    sys.exit(1)
+vmajor, vminor = sys.argv[1].split(".")
+vmajor, vminor = int(vmajor), int(vminor)
+patches = [v for v in versions if v.major == vmajor and v.minor == vminor]
+latests = sorted(patches, key=lambda v: -v.patch)
+if len(latests) == 0:
+    print("no versions matching input", file=sys.stderr)
+    sys.exit(1)
+latest = latests[0]
+print("v"+semver.format_version(latest.major, latest.minor, latest.patch))
