@@ -6,13 +6,17 @@ else
   source $DIR/env_drone
 fi
 
-ENV=testing
-if [[ $CI_TAG =~ ^v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
-  ENV=production
-elif [[ $CI_BRANCH =~ ^release/[0-9]+(.[0-9]+){1,2}$ ]]; then
-  ENV=staging
-else
+if [[ -z "$APT_ENV" ]]; then
   ENV=testing
+  if [[ $CI_TAG =~ ^v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
+    ENV=production
+  elif [[ $CI_BRANCH =~ ^release/[0-9]+(.[0-9]+){1,2}$ ]]; then
+    ENV=staging
+  else
+    ENV=testing
+  fi
+else
+  ENV=$APT_ENV
 fi
 
 APT_REPO="${APT_REPO:-internal.apt.fresh8.tech}"
