@@ -36,7 +36,7 @@ if [[ "$DRONE" == "true" ]]; then
   curl -X POST -F "pkg=$(basename $LATEST .deb)" -F "env=$ENV" http://$APT_REPO/notify
 else
   REPO_PATH=/home/apt/.aptly/upload/$LATEST
-  scp $LATEST $CI_USER@$APT_REPO:$REPO_PATH
+  scp ./$LATEST $CI_USER@$APT_REPO:$REPO_PATH
 
   ssh $CI_USER@$APT_REPO 'chmod 0775 '$REPO_PATH'; env='$ENV' deb_filename='$LATEST' aptly-update'
 fi
