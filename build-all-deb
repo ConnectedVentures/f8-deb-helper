@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+runner() {
+
+  HELPER_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  for file in deb_*; do
+    export NAME="${file/deb_/}"
+    $HELPER_DIR/build-deb
+    $HELPER_DIR/push-deb
+  done
+}
+
+runner
