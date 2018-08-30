@@ -23,7 +23,6 @@ if [[ ! -d $DEB_DIR/DEBIAN ]]; then
   exit 1
 fi
 
-VERSION=unknown
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [[ "$CIRCLECI" == "true" ]]; then
@@ -32,22 +31,26 @@ else
   source $DIR/env_drone
 fi
 
-if [[ $CI_TAG =~ ^v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
-  VERSION=${BASH_REMATCH[1]}
-elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+.[0-9]+){1}$ ]]; then
-  VERSION="${BASH_REMATCH[1]}-b.${CI_BUILD_NUMBER}"
-elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+){1}$ ]]; then
-  VERSION="${BASH_REMATCH[1]}.0-b.${CI_BUILD_NUMBER}"
-elif [[ "$BUILD_ORDERED_TESTING" == true ]]; then
-  # see https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
-  # for which character are allowed. "-" is a special case
-  SLUGIFIED_BRANCH=`sed 's/[^0-9A-Za-z+~.]/./g' <<< $CI_BRANCH`
-  VERSION="0.0.${CI_BUILD_NUMBER}+${SLUGIFIED_BRANCH}+${COMMIT_ID}"
-else
-  VERSION="0.0.0-${COMMIT_ID}-${CI_BRANCH}"
-fi
+if [[ -z "$DEB_VERSION" ]]; then
+  if [[ $CI_TAG =~ ^v([0-9]+.[0-9]+.[0-9]+)$ ]]; then
+    VERSION=${BASH_REMATCH[1]}
+  elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+.[0-9]+){1}$ ]]; then
+    VERSION="${BASH_REMATCH[1]}-b.${CI_BUILD_NUMBER}"
+  elif [[ $CI_BRANCH =~ ^release/([0-9]+.[0-9]+){1}$ ]]; then
+    VERSION="${BASH_REMATCH[1]}.0-b.${CI_BUILD_NUMBER}"
+  elif [[ "$BUILD_ORDERED_TESTING" == true ]]; then
+    # see https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
+    # for which character are allowed. "-" is a special case
+    SLUGIFIED_BRANCH=`sed 's/[^0-9A-Za-z+~.]/./g' <<< $CI_BRANCH`
+    VERSION="0.0.${CI_BUILD_NUMBER}+${SLUGIFIED_BRANCH}+${COMMIT_ID}"
+  else
+    VERSION="0.0.0-${COMMIT_ID}-${CI_BRANCH}"
+  fi
 
-VERSION=$(sed "s/\//-/g" <<< $VERSION)
+  VERSION=$(sed "s/\//-/g" <<< $VERSION)
+else
+  VERSION=$DEB_VERSION
+fi
 
 sed -i.bak "s/CI_VERSION/$VERSION/g" $DEB_DIR/DEBIAN/control
 
