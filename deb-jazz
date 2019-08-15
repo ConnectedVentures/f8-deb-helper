@@ -2,7 +2,7 @@
 
 runner() {
   HELPER_VERSION="${VERSION:-2.1.0}"
-  wget -qO- "https://github.com/ConnectedVentures/f8-deb-helper/archive/${HELPER_VERSION}.tar.gz" | tar xvz
+  wget -qO- "https://github.com/fresh8gaming/f8-deb-helper/archive/${HELPER_VERSION}.tar.gz" | tar xvz
   rm -rf f8-deb-helper
   mv f8-deb-helper-$(tr -d 'v' <<< $HELPER_VERSION) f8-deb-helper
 
