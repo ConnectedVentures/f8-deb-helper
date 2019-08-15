@@ -4,12 +4,12 @@ set -e
 
 runner() {
   pip3 install --user semver
-  curl https://raw.githubusercontent.com/ConnectedVentures/f8-deb-helper/release/4.1/latest-helper > latest-helper
+  curl https://raw.githubusercontent.com/fresh8gaming/f8-deb-helper/release/4.1/latest-helper > latest-helper
   chmod +x latest-helper
-  latest_version=$(curl -s https://api.github.com/repos/ConnectedVentures/f8-deb-helper/releases | ./latest-helper $VERSION)
+  latest_version=$(curl -s https://api.github.com/repos/fresh8gaming/f8-deb-helper/releases | ./latest-helper $VERSION)
   echo "Using deb-helper ${latest_version}"
 
-  wget -qO- "https://github.com/ConnectedVentures/f8-deb-helper/archive/${latest_version}.tar.gz" | tar xvz
+  wget -qO- "https://github.com/fresh8gaming/f8-deb-helper/archive/${latest_version}.tar.gz" | tar xvz
 
   rm -rf f8-deb-helper
   mv f8-deb-helper-$(tr -d 'v' <<< $latest_version) f8-deb-helper
